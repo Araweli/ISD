@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints xmlns='http://java.sun.com/xml/ns/jax-ws/ri/runtime' version='2.0'>
+    <!-- Fill XXX and uncomment the following lines --> 
+    
+    <endpoint
+            name='DriversProvider'
+            implementation='es.udc.ws.app.soapservice.SoapDriverService'
+            url-pattern='/services/DriversService'/>
+    
+</endpoints>

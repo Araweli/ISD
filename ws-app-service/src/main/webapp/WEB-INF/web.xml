@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+
+    <distributable/>
+
+    <display-name>WS Events Service</display-name>
+
+    <!-- JAXWS service -->  
+
+    <listener>
+        <listener-class>
+            com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+        </listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>WSServlet</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>WSServlet</servlet-name>
+        <url-pattern>/services/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- REST service -->
+    <!-- Fill XXX and uncomment the following lines --> 
+    
+    <servlet>
+        <display-name>DriversServlet</display-name>
+        <servlet-name>DriversServlet</servlet-name>
+        <servlet-class>
+            es.udc.ws.app.restservice.servlets.DriversServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DriversServlet</servlet-name>
+        <url-pattern>/drivers/*</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+        <display-name>TripsServlet</display-name>
+        <servlet-name>TripsServlet</servlet-name>
+        <servlet-class>
+            es.udc.ws.app.restservice.servlets.TripsServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TripsServlet</servlet-name>
+        <url-pattern>/trips/*</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+		<display-name>TripsRatingServlet</display-name>
+        <servlet-name>TripsRatingServlet</servlet-name>
+        <servlet-class>
+            es.udc.ws.app.restservice.servlets.TripsRatingServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TripsRatingServlet</servlet-name>
+        <url-pattern>/rating/*</url-pattern>
+    </servlet-mapping>
+   
+
+    <!-- General configuration -->
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+</web-app>

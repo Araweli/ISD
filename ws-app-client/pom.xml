@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>es.udc.ws.app</groupId>
+        <artifactId>ws-app</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>ws-app-client</artifactId>
+    <packaging>jar</packaging>
+    <name>WS App Client Subsystem</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>es.udc.ws</groupId>
+            <artifactId>ws-util</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>fluent-hc</artifactId>
+		</dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+			<plugin>			
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>${jaxwsMavenPlugin}</version>
+				<executions>
+					<execution>
+						<id>wsimport-from-jdk</id>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>${tool.wsimport}</executable>
+                    <wsdlDirectory>../ws-app-service/target/generated-sources/wsdl/</wsdlDirectory>
+                    <sourceDestDir>src/main/java</sourceDestDir>
+                    <packageName>es.udc.ws.app.client.service.soap.wsdl</packageName>
+				</configuration>
+            </plugin>
+        </plugins>
+        
+		<!-- ========================================================== -->
+		<!-- Prevent m2eclipse plugin to mark projects as invalid -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jvnet.jax-ws-commons</groupId>
+										<artifactId>jaxws-maven-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>wsgen</goal>
+											<goal>wsimport</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+        
+    </build>
+
+</project>

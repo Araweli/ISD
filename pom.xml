@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>es.udc.ws.app</groupId>
+    <artifactId>ws-app</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+    <name>WS App Project</name>
+
+    <modules>
+        <module>ws-app-model</module>
+        <module>ws-app-service</module>
+        <module>ws-app-client</module>
+    </modules>
+
+    <!-- =================================================================== -->
+    <!-- Default values for properties. These default values are expected 
+        to be valid for most profiles. Specific profiles can overwrite values when 
+        necessary. -->
+    <properties>
+        <!-- Data source properties -->
+        <dataSource.user>ws</dataSource.user>
+        <dataSource.password>ws</dataSource.password>
+        <dataSource.jndiName>jdbc/ws-javaexamples-ds</dataSource.jndiName>
+        <testDataSource.user>${dataSource.user}</testDataSource.user>
+        <testDataSource.password>${dataSource.password}</testDataSource.password>
+
+        <!-- Encoding -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Package versions -->
+		<commonsDbcp.version>2.1.1</commonsDbcp.version>
+		<junit.version>4.12</junit.version>
+		<servletApi.version>2.3</servletApi.version>
+		<httpclient.version>4.5.2</httpclient.version>
+		<jdom2.version>2.0.6</jdom2.version>
+		<jaxws.version>2.2.10</jaxws.version>
+        <ws-util.version>3.2.3</ws-util.version>
+
+		<!-- JDBC driver properties -->
+		<jdbcDriver.groupId>mysql</jdbcDriver.groupId>
+		<jdbcDriver.artifactId>mysql-connector-java</jdbcDriver.artifactId>
+		<jdbcDriver.version>5.1.39</jdbcDriver.version>
+		<jdbcDriver.className>com.mysql.jdbc.Driver</jdbcDriver.className>
+
+		<!-- Data source properties -->
+		<dataSource.url>jdbc:mysql://localhost/ws</dataSource.url>
+		<testDataSource.url>${dataSource.url}test</testDataSource.url>
+		<dataSource.createTablesScript>MySQLCreateTables.sql</dataSource.createTablesScript>
+
+		<!-- Plugin versions -->
+		<mavenCompilerPlugin.version>3.5.1</mavenCompilerPlugin.version>
+		<mavenResourcesPlugin.version>3.0.1</mavenResourcesPlugin.version>
+		<sqlMavenPlugin.version>1.5</sqlMavenPlugin.version>
+		<mavenAssemblyPlugin.version>2.6</mavenAssemblyPlugin.version>
+		<jettyMavenPlugin>9.3.10.v20160621</jettyMavenPlugin>
+		<jaxwsMavenPlugin>2.4.1</jaxwsMavenPlugin>
+		
+    </properties>
+
+	<!-- ========================================================== -->
+	<!-- Profiles -->
+	<profiles>
+		<profile>
+			<id>win</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<tool.wsgen>${java.home}/../bin/wsgen.exe</tool.wsgen>
+				<tool.wsimport>${java.home}/../bin/wsimport.exe</tool.wsimport>
+			</properties>
+		</profile>
+		<profile>
+			<id>nix</id>
+			<activation>
+				<os>
+					<family>!windows</family>
+				</os>
+			</activation>
+			<properties>
+				<tool.wsgen>${java.home}/../bin/wsgen</tool.wsgen>
+				<tool.wsimport>${java.home}/../bin/wsimport</tool.wsimport>
+			</properties>
+		</profile>
+	</profiles>
+	
+    <!-- ========================================================== -->
+    <!-- Additional repositories -->
+    <repositories>
+    </repositories>
+
+    <!-- ========================================================== -->
+    <!-- Dependency management -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- JDBC driver -->
+            <dependency>
+                <groupId>${jdbcDriver.groupId}</groupId>
+                <artifactId>${jdbcDriver.artifactId}</artifactId>
+                <version>${jdbcDriver.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- Commons DBCP - JDBC Connection Pool -->
+            <dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-dbcp2</artifactId>
+				<version>${commonsDbcp.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- JUnit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- Servlet API -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servletApi.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- JAXWS -->
+            <dependency>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-rt</artifactId>
+                <version>${jaxws.version}</version>
+            </dependency>
+            <!-- WS-JavaExamples Util -->
+            <dependency>
+                <groupId>es.udc.ws</groupId>
+                <artifactId>ws-util</artifactId>
+                <version>${ws-util.version}</version>
+            </dependency>
+			<!-- Commons HttpClient -->
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>fluent-hc</artifactId>
+				<version>${httpclient.version}</version>
+			</dependency>
+            <!-- JDOM2 -->
+            <dependency>
+                <groupId>org.jdom</groupId>
+                <artifactId>jdom2</artifactId>
+                <version>${jdom2.version}</version>
+            </dependency>
+            <!-- Project Model -->
+            <dependency>
+                <groupId>es.udc.ws.app</groupId>
+                <artifactId>ws-app-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- Project XML Util -->
+            <dependency>
+                <groupId>es.udc.ws.app</groupId>
+                <artifactId>ws-app-util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+
+        <!-- =============================================================== -->
+        <!-- Filtering -->
+        <resources>
+
+            <!-- Apply filtering to files matching the following expressions 
+                in src/main/resources. -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <!-- TODO: revisar -->
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+
+            <!-- Continue considering resources the files in src/main/resources, 
+                but without applying filtering. -->
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+
+            <!-- Filter Jetty configuration -->
+            <resource>
+                <directory>../src/main/jetty</directory>
+                <includes>
+                    <include>jetty-env.xml</include>
+                </includes>
+                <targetPath>../jetty</targetPath>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <testResources>
+
+            <!-- Apply filtering to files matching the following expressions 
+                in src/test/resources. -->
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <!-- TODO: revisar -->
+                    <include>*.properties</include>
+                </includes>
+            </testResource>
+
+            <!-- Continue considering resources the files in src/test/resources, 
+                but without applying filtering. -->
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+
+        </testResources>
+
+
+        <plugins>
+
+			<!-- ========================================================== -->
+			<!-- Compiler configuration -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${mavenCompilerPlugin.version}</version>
+				<configuration>
+					<verbose>true</verbose>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<showDeprecation>true</showDeprecation>
+					<showWarnings>true</showWarnings>
+				</configuration>
+			</plugin>
+			
+            <!-- ========================================================== -->
+            <!-- Resources plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${mavenResourcesPlugin.version}</version>
+            </plugin>
+
+  			<!-- ========================================================== -->
+			<!-- Exec plugin -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.5.0</version>
+			</plugin>
+            
+            <!-- ========================================================== -->
+            <!-- Setting SQL Plugin -->
+            <!-- - Configuration specifies onError="continue" since SQL scripts 
+                try to drop tables before creating them (which causes errors if such tables 
+                do not exist yet). - Configuartion specifies autocommit="true" since some 
+                drivers (e.g the PostgreSQL JDBC 2 driver) do not commit changes if some 
+                error ocurrs. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <version>${sqlMavenPlugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>${jdbcDriver.groupId}</groupId>
+                        <artifactId>${jdbcDriver.artifactId}</artifactId>
+                        <version>${jdbcDriver.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <driver>${jdbcDriver.className}</driver>
+                    <url>${dataSource.url}</url>
+                    <username>${dataSource.user}</username>
+                    <password>${dataSource.password}</password>
+                    <autocommit>true</autocommit>
+                    <onError>continue</onError>
+                    <fileset>
+                        <basedir>${basedir}</basedir>
+                        <includes>
+                            <include>
+                                src/sql/${dataSource.createTablesScript}
+                            </include>
+                        </includes>
+                    </fileset>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>create-tables-for-testing</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <driver>${jdbcDriver.className}</driver>
+                            <url>${testDataSource.url}</url>
+                            <username>${testDataSource.user}</username>
+                            <password>${testDataSource.password}</password>
+                            <autocommit>true</autocommit>
+                            <onError>continue</onError>
+                            <fileset>
+                                <basedir>${basedir}</basedir>
+                                <includes>
+                                    <include>
+                                        src/sql/${dataSource.createTablesScript}
+                                    </include>
+                                </includes>
+                            </fileset>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- ========================================================== -->
+            <!-- Assembly configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${mavenAssemblyPlugin.version}</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/src.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+        <!-- ========================================================== -->
+        <!-- Prevent m2eclipse plugin to mark projects as invalid -->
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.jvnet.jax-ws-commons</groupId>
+                                        <artifactId>jaxws-maven-plugin</artifactId>
+                                        <versionRange>[1.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>wsgen</goal>
+                                            <goal>wsimport</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>sql-maven-plugin</artifactId>
+                                        <versionRange>[1.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>execute</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+    </build>
+
+</project>
